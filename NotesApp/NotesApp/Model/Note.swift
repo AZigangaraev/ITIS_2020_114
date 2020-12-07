@@ -8,8 +8,15 @@
 import Foundation
 
 struct Note: Codable {
-    let id: Int?
-    let title: String
-    let text: String
-    let dateModified: Date?
+    var id: UUID
+    var title: String
+    var text: String
+    var dateModified: Date?
+
+    init(title: String, text: String, dateModified: Date? = nil) {
+        id = UUID()
+        self.title = title
+        self.text = text
+        self.dateModified = dateModified
+    }
 }
