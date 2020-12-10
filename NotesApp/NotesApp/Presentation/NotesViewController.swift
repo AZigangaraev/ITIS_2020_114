@@ -13,7 +13,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     private let cellIdentifier = "Cell"
     private let notesService = NotesService()
     private var notes: [Note] = [] 
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -21,7 +21,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewWillAppear(_ animated: Bool) {
         loadNotes()
     }
-
+    
     @IBAction func addTap(_ sender: Any) {
         let controller = editNoteController()
         navigationController?.pushViewController(controller, animated: true)
@@ -32,7 +32,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         notes.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let note = notes[indexPath.row]
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) {
@@ -61,7 +61,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             print("insert")
         }
     }
-
+    
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -72,7 +72,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         controller.setData()
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
     
     // MARK: - Helpers
     
