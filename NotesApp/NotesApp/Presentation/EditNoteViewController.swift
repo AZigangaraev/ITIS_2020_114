@@ -23,7 +23,6 @@ class EditNoteViewController: UIViewController {
         textView.layer.borderWidth = 0.5
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.cornerRadius = 8
-        modifiedDateLabel.text = "Modified date"
     }
 
     @objc private func saveTap(_ sender: Any) {
@@ -45,6 +44,7 @@ class EditNoteViewController: UIViewController {
             case .success(()) : break 
             }
         }
+        navigationController?.popViewController(animated: true)
     }
     
     func setData() {
@@ -55,7 +55,7 @@ class EditNoteViewController: UIViewController {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let modDate = dateFormatter.string(from: date)
-            modifiedDateLabel.text = "Last modified - \(modDate)"
+            modifiedDateLabel.text = "Last change was \(modDate)"
         }
         titleTextField.text = note.title
         textView.text = note.text
