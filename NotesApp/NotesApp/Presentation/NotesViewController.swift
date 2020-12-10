@@ -88,7 +88,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             switch result {
             case .success(let arrayNote):
                 self.notes = arrayNote
-                tableView.reloadData()
+                self.tableView.reloadData()
             case .failure(let error):
                 print(error)
             }

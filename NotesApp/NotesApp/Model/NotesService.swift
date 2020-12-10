@@ -64,9 +64,7 @@ class NotesService {
             return result = .failure(.pathCreation)
         }
         let notePath = path.appendingPathComponent("\(currentNote.id.uuidString).json")
-        if currentNote.dateModified == nil {
-            currentNote.dateModified = Date()
-        } else {
+        if note.dateModified != nil {
             delete(note: note) { result in
                 switch result {
                 case .failure(let error):
@@ -75,6 +73,7 @@ class NotesService {
                 }
             }
         }
+        currentNote.dateModified = Date()
         do {
             let data = try encoder.encode(currentNote)
             guard fileManager.createFile(atPath: notePath.path, contents: data) else {
