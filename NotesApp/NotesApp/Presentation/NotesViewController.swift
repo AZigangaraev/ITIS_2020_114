@@ -8,6 +8,12 @@
 import UIKit
 
 class NotesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    private var notes: [Note] = []
+    private let cellIdentifier = "Cell"
+    @IBOutlet private var tableView: UITableView!
+    
+    let notesService = NotesService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,14 +23,26 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         let controller = editNoteController()
         navigationController?.pushViewController(controller, animated: true)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loadNotes()
+    }
 
-    private var notes: [Note] = []
-
+    private func loadNotes() {
+        notesService.notes() { [self] result in
+            switch result {
+            case .success(let arrayNote):
+                self.notes = arrayNote
+                tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         notes.count
     }
-
-    private let cellIdentifier = "Cell"
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let note = notes[indexPath.row]
@@ -40,11 +58,17 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let controller = editNoteController()
+        controller.loadViewIfNeeded()
+        controller.note = notes[indexPath.row]
+        controller.setData()
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func editNoteController() -> EditNoteViewController {
         guard let storyboard = storyboard else { fatalError() }
-
-        return storyboard.instantiateViewController(identifier: "EditNoteViewController")
+        guard let controller = storyboard.instantiateViewController(identifier: "EditNoteViewController") as? EditNoteViewController else { fatalError() }
+        controller.notesService = notesService
+        return controller
     }
 }

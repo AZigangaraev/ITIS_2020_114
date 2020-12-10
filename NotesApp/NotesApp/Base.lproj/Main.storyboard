@@ -20,8 +20,8 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="3ew-hU-1pr"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="QcL-hb-5L3"/>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="dFS-ON-rkA"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="OTx-WQ-60M"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -41,6 +41,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="lvi-NT-DWq" id="ICN-TF-UEY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -54,7 +57,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modified date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3S-nV-XP6">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3S-nV-XP6">
                                 <rect key="frame" x="20" y="20" width="335" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
