@@ -30,13 +30,15 @@ class EditNoteViewController: UIViewController {
         guard let title = titleTextField.text else {
             fatalError("no title")
         }
-        let note: Note
-        if modifiedDateLabel.text == "Modified date" {
-            note = Note(title: title, text: textView.text)
+        let saveNote: Note
+        if var prevNote = note {
+            prevNote.text = textView.text
+            prevNote.title = title
+            saveNote = prevNote
         } else {
-            note = Note(title: title, text: textView.text, dateModified: Date())
+            saveNote = Note(title: title, text: textView.text)
         }
-        notesService?.save(note: note) { result in
+        notesService?.save(note: saveNote) { result in
             switch result {
             case .failure(let error):
                 print(error)

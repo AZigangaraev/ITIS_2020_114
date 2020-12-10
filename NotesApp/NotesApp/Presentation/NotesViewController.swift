@@ -55,6 +55,23 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             return cell
         }
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            notesService.delete(note: notes[indexPath.row]) { result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(()): break
+                }
+            }
+            notes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+        if editingStyle == .insert {
+            print("inser")
+        }
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
