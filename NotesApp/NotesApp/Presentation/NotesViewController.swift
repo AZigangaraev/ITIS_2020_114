@@ -9,14 +9,17 @@ import UIKit
 
 class NotesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private var notes: [Note] = []
-    private let cellIdentifier = "Cell"
     @IBOutlet private var tableView: UITableView!
-    
-    let notesService = NotesService()
+    private let cellIdentifier = "Cell"
+    private let notesService = NotesService()
+    private var notes: [Note] = [] 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loadNotes()
     }
 
     @IBAction func addTap(_ sender: Any) {
@@ -24,21 +27,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        loadNotes()
-    }
-
-    private func loadNotes() {
-        notesService.notes() { [self] result in
-            switch result {
-            case .success(let arrayNote):
-                self.notes = arrayNote
-                tableView.reloadData()
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
+    // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         notes.count
@@ -69,10 +58,12 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
         if editingStyle == .insert {
-            print("inser")
+            print("insert")
         }
     }
 
+    // MARK: - UITableViewDelegate
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let controller = editNoteController()
@@ -82,10 +73,25 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         navigationController?.pushViewController(controller, animated: true)
     }
 
+    
+    // MARK: - Helpers
+    
     private func editNoteController() -> EditNoteViewController {
         guard let storyboard = storyboard else { fatalError() }
         guard let controller = storyboard.instantiateViewController(identifier: "EditNoteViewController") as? EditNoteViewController else { fatalError() }
         controller.notesService = notesService
         return controller
+    }
+    
+    private func loadNotes() {
+        notesService.notes() { [self] result in
+            switch result {
+            case .success(let arrayNote):
+                self.notes = arrayNote
+                tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
