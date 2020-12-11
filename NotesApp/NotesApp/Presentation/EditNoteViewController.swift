@@ -26,18 +26,14 @@ class EditNoteViewController: UIViewController {
     }
     
     @objc private func saveTap(_ sender: Any) {
-        var text = textView.text
-        guard var title = titleTextField.text else {
-            fatalError("no title")
-        }
+        guard var text = textView.text else { fatalError("no title") }
+        guard var title = titleTextField.text else { fatalError("no title") }
         title = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        text = text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        if title != "" || text != "" {
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if (title != "" || text != "") {
             let saveNote: Note
-            if var prevNote = note {
-                prevNote.text = textView.text
-                prevNote.title = title
-                saveNote = prevNote
+            if let prevNote = note {
+                saveNote = Note(title: title, text: text, dateModified: prevNote.dateModified)
             } else {
                 saveNote = Note(title: title, text: textView.text)
             }
@@ -63,9 +59,7 @@ class EditNoteViewController: UIViewController {
     }
     
     func setData() {
-        guard let note = note else {
-            return
-        }
+        guard let note = note else { return }
         if let date = note.dateModified {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

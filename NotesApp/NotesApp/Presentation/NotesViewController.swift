@@ -10,6 +10,7 @@ import UIKit
 class NotesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet private var tableView: UITableView!
+    
     private let cellIdentifier = "Cell"
     private let notesService = NotesService()
     private let userDefaults = UserDefaults.standard
@@ -23,11 +24,6 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadNotes()
-    }
-    
-    @IBAction func addTap(_ sender: Any) {
-        let controller = editNoteController()
-        navigationController?.pushViewController(controller, animated: true)
     }
     
     // MARK: - UITableViewDataSource
@@ -48,6 +44,12 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             return cell
         } else {
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+            cell.textLabel?.text = note.title
+            cell.detailTextLabel?.text = note.text
+            let int = userDefaults.array(forKey: namePinnedArray)?.count
+            if (int ?? 0 > indexPath.row) {
+                cell.accessoryType = .checkmark
+            }
             return cell
         }
     }
@@ -68,10 +70,14 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let accept = UIContextualAction(style: .normal, title: nil) { (_, _, completion) in
-            if self.pinNote(forIndex: indexPath.row) {
+        let accept = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
+            guard let boolean = self?.pinNote(forIndex: indexPath.row) else {
+                completion(false)
+                return
+            }
+            if boolean {
                 completion(true)
-                self.loadNotes()
+                self?.loadNotes()
             } else {
                 completion(false)
             }
@@ -92,6 +98,12 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         navigationController?.pushViewController(controller, animated: true)
     }
     
+    // MARK: - IBAction
+    
+    @IBAction func addTap(_ sender: Any) {
+        let controller = editNoteController()
+        navigationController?.pushViewController(controller, animated: true)
+    }
     
     // MARK: - Helpers
     
@@ -116,9 +128,13 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     private func pinNote(forIndex index: Int) -> Bool {
         var array = userDefaults.array(forKey: namePinnedArray) as? [String] ?? [String]()
-        array.append(notes[index].id.uuidString)
-        userDefaults.setValue(array, forKey: namePinnedArray)
-        return true
+        let arrayCount = array.count
+        if (arrayCount < index) {
+            array.append(notes[index].id.uuidString)
+            userDefaults.setValue(array, forKey: namePinnedArray)
+            return true
+        }
+        return false
     }
     
     private func deleteNote(forIndex index: Int) {
