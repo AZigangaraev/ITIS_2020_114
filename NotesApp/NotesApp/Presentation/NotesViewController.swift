@@ -12,13 +12,16 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet private var tableView: UITableView!
     private let cellIdentifier = "Cell"
     private let notesService = NotesService()
+    private let userDefaults = UserDefaults.standard
     private var notes: [Note] = [] 
+    private let namePinnedArray = "pinnedNotesArray"
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadNotes()
     }
     
@@ -38,6 +41,10 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) {
             cell.textLabel?.text = note.title
             cell.detailTextLabel?.text = note.text
+            let int = userDefaults.array(forKey: namePinnedArray)?.count
+            if (int ?? 0 > indexPath.row) {
+                cell.accessoryType = .checkmark
+            }
             return cell
         } else {
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
@@ -54,12 +61,24 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
                 case .success(()): break
                 }
             }
+            deleteNote(forIndex: indexPath.row)
             notes.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
-        if editingStyle == .insert {
-            print("insert")
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let accept = UIContextualAction(style: .normal, title: nil) { (_, _, completion) in
+            if self.pinNote(forIndex: indexPath.row) {
+                completion(true)
+                self.loadNotes()
+            } else {
+                completion(false)
+            }
         }
+        accept.backgroundColor = .systemGreen
+        accept.image = UIImage(systemName: "pin")
+        return UISwipeActionsConfiguration(actions: [accept])
     }
     
     // MARK: - UITableViewDelegate
@@ -92,6 +111,28 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             case .failure(let error):
                 print(error)
             }
+        }
+    }
+    
+    private func pinNote(forIndex index: Int) -> Bool {
+        var array = userDefaults.array(forKey: namePinnedArray) as? [String] ?? [String]()
+        array.append(notes[index].id.uuidString)
+        userDefaults.setValue(array, forKey: namePinnedArray)
+        return true
+    }
+    
+    private func deleteNote(forIndex index: Int) {
+        var array = userDefaults.array(forKey: namePinnedArray) as? [String] ?? [String]()
+        let arrayCount = array.count
+        if arrayCount > 0 && index < arrayCount {
+            let idString = notes[index].id.uuidString
+            for i in 0..<arrayCount {
+                if array[i] == idString {
+                    array.remove(at: i)
+                    break
+                }
+            }
+            userDefaults.setValue(array, forKey: namePinnedArray)
         }
     }
 }
