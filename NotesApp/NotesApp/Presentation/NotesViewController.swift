@@ -14,8 +14,9 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     private let cellIdentifier = "Cell"
     private let notesService = NotesService()
     private let userDefaults = UserDefaults.standard
-    private var notes: [Note] = [] 
     private let namePinnedArray = "pinnedNotesArray"
+    private var array: [String] = []
+    private var notes: [Note] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,18 +38,20 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) {
             cell.textLabel?.text = note.title
             cell.detailTextLabel?.text = note.text
-            let int = userDefaults.array(forKey: namePinnedArray)?.count
-            if (int ?? 0 > indexPath.row) {
+            if getCount() > indexPath.row {
                 cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
             }
             return cell
         } else {
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
             cell.textLabel?.text = note.title
             cell.detailTextLabel?.text = note.text
-            let int = userDefaults.array(forKey: namePinnedArray)?.count
-            if (int ?? 0 > indexPath.row) {
+            if getCount() > indexPath.row {
                 cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
             }
             return cell
         }
@@ -70,20 +73,27 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let accept = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
-            guard let boolean = self?.pinNote(forIndex: indexPath.row) else {
-                completion(false)
-                return
+        var accept = UIContextualAction()
+        if (indexPath.row >= getCount()) {
+            accept = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
+                guard let pinNoteCheck = self?.pinNote(forIndex: indexPath.row) else { return completion(false) }
+                if pinNoteCheck {
+                    completion(true)
+                    self?.loadNotes()
+                } else {
+                    completion(false)
+                }
             }
-            if boolean {
-                completion(true)
+            accept.image = UIImage(systemName: "pin")
+        } else {
+            accept = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
+                self?.deleteNote(forIndex: indexPath.row)
                 self?.loadNotes()
-            } else {
-                completion(false)
+                completion(true)
             }
+            accept.image = UIImage(systemName: "pin.slash")
         }
         accept.backgroundColor = .systemGreen
-        accept.image = UIImage(systemName: "pin")
         return UISwipeActionsConfiguration(actions: [accept])
     }
     
@@ -127,9 +137,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     private func pinNote(forIndex index: Int) -> Bool {
-        var array = userDefaults.array(forKey: namePinnedArray) as? [String] ?? [String]()
-        let arrayCount = array.count
-        if (arrayCount < index) {
+        if (getCount() <= index) {
             array.append(notes[index].id.uuidString)
             userDefaults.setValue(array, forKey: namePinnedArray)
             return true
@@ -138,8 +146,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     private func deleteNote(forIndex index: Int) {
-        var array = userDefaults.array(forKey: namePinnedArray) as? [String] ?? [String]()
-        let arrayCount = array.count
+        let arrayCount = getCount()
         if arrayCount > 0 && index < arrayCount {
             let idString = notes[index].id.uuidString
             for i in 0..<arrayCount {
@@ -150,5 +157,10 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
             userDefaults.setValue(array, forKey: namePinnedArray)
         }
+    }
+    
+    private func getCount() -> Int {
+        array = userDefaults.stringArray(forKey: namePinnedArray) ?? [String]()
+        return array.count
     }
 }

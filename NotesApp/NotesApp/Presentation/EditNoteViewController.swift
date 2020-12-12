@@ -32,8 +32,10 @@ class EditNoteViewController: UIViewController {
         text = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if (title != "" || text != "") {
             let saveNote: Note
-            if let prevNote = note {
-                saveNote = Note(title: title, text: text, dateModified: prevNote.dateModified)
+            if var prevNote = note {
+                prevNote.text = textView.text
+                prevNote.title = title
+                saveNote = prevNote
             } else {
                 saveNote = Note(title: title, text: textView.text)
             }
