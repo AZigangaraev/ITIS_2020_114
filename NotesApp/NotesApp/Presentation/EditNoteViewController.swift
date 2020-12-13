@@ -30,7 +30,7 @@ class EditNoteViewController: UIViewController {
         guard var title = titleTextField.text else { fatalError("no title") }
         title = title.trimmingCharacters(in: .whitespacesAndNewlines)
         text = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        if (title != "" || text != "") {
+        if title != "" || text != "" {
             let saveNote: Note
             if var prevNote = note {
                 prevNote.text = textView.text
