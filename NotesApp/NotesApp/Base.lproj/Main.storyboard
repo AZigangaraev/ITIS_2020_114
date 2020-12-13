@@ -20,8 +20,8 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="3ew-hU-1pr"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="QcL-hb-5L3"/>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="dFS-ON-rkA"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="OTx-WQ-60M"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -41,6 +41,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="lvi-NT-DWq" id="ICN-TF-UEY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
