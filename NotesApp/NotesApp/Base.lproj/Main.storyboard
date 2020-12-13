@@ -41,6 +41,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="lvi-NT-DWq" id="7dX-4A-x3B"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -55,7 +58,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modified date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E3S-nV-XP6">
-                                <rect key="frame" x="20" y="20" width="335" height="21"/>
+                                <rect key="frame" x="20" y="20" width="279" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -75,23 +78,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gkK-c4-ZpP">
+                                <rect key="frame" x="309" y="15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="xTB-Sp-zMb"/>
+                                </constraints>
+                                <state key="normal" title="Pin"/>
+                                <connections>
+                                    <action selector="editPin:" destination="sX9-UY-xHA" eventType="touchUpInside" id="wHi-zr-ivH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9HT-FO-SxH"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="BbR-6C-F4T" firstAttribute="top" secondItem="gkK-c4-ZpP" secondAttribute="bottom" constant="4" id="1kw-LQ-j3t"/>
                             <constraint firstItem="BbR-6C-F4T" firstAttribute="top" secondItem="E3S-nV-XP6" secondAttribute="bottom" constant="8" id="1nZ-jD-tW3"/>
+                            <constraint firstItem="gkK-c4-ZpP" firstAttribute="top" secondItem="9HT-FO-SxH" secondAttribute="top" constant="15" id="Dmy-gn-Q0G"/>
+                            <constraint firstItem="9HT-FO-SxH" firstAttribute="trailing" secondItem="gkK-c4-ZpP" secondAttribute="trailing" constant="20" id="FkK-BU-CcR"/>
                             <constraint firstItem="F3q-aq-AP4" firstAttribute="top" secondItem="BbR-6C-F4T" secondAttribute="bottom" constant="8" id="Itw-sh-zw1"/>
+                            <constraint firstItem="gkK-c4-ZpP" firstAttribute="leading" secondItem="E3S-nV-XP6" secondAttribute="trailing" constant="10" id="K25-Nf-KF4"/>
                             <constraint firstItem="F3q-aq-AP4" firstAttribute="leading" secondItem="9HT-FO-SxH" secondAttribute="leading" constant="20" id="OPE-FE-tli"/>
                             <constraint firstItem="9HT-FO-SxH" firstAttribute="trailing" secondItem="F3q-aq-AP4" secondAttribute="trailing" constant="20" id="PWC-Xl-2vm"/>
                             <constraint firstItem="E3S-nV-XP6" firstAttribute="leading" secondItem="9HT-FO-SxH" secondAttribute="leading" constant="20" id="bqm-yN-1Bo"/>
                             <constraint firstItem="BbR-6C-F4T" firstAttribute="leading" secondItem="9HT-FO-SxH" secondAttribute="leading" constant="20" id="cfp-Th-qCI"/>
                             <constraint firstItem="9HT-FO-SxH" firstAttribute="trailing" secondItem="BbR-6C-F4T" secondAttribute="trailing" constant="20" id="dLs-p2-IUp"/>
                             <constraint firstItem="E3S-nV-XP6" firstAttribute="top" secondItem="9HT-FO-SxH" secondAttribute="top" constant="20" id="rVb-ut-001"/>
-                            <constraint firstItem="9HT-FO-SxH" firstAttribute="trailing" secondItem="E3S-nV-XP6" secondAttribute="trailing" constant="20" id="sQX-sf-fpa"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="modifiedDateLabel" destination="E3S-nV-XP6" id="ext-D3-mFp"/>
+                        <outlet property="pinButton" destination="gkK-c4-ZpP" id="YUX-RA-zQK"/>
                         <outlet property="textView" destination="F3q-aq-AP4" id="OhU-FJ-yzc"/>
                         <outlet property="titleTextField" destination="BbR-6C-F4T" id="W1D-9u-Y61"/>
                     </connections>
