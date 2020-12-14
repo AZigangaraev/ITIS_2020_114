@@ -66,9 +66,7 @@ class NotesService {
     }
     /// Закрепить заметку.
     func pin(note: Note, compleationHandler: @escaping (Result<Void, Error>) -> Void) {
-        guard var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else {
-            return
-        }
+        var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
         list.append(note.id.uuidString)
         UserDefaults.standard.setValue(list, forKey: "array")
     }
