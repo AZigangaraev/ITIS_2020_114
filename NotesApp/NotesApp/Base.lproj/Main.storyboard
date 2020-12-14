@@ -41,10 +41,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="lvi-NT-DWq" id="SjS-bU-XHg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="428" y="144.3778110944528"/>
+            <point key="canvasLocation" x="510" y="143"/>
         </scene>
         <!--Edit Note View Controller-->
         <scene sceneID="V1H-6I-aOI">
@@ -116,7 +119,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zOz-ue-aJP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-511.19999999999999" y="144.3778110944528"/>
+            <point key="canvasLocation" x="-244" y="143"/>
         </scene>
     </scenes>
     <resources>

@@ -19,4 +19,11 @@ struct Note: Codable {
         self.text = text
         self.dateModified = dateModified
     }
+    
+    init(title: String, text: String) {
+        id = UUID()
+        self.title = title
+        self.text = text
+        self.dateModified = Date.init()
+    }
 }
