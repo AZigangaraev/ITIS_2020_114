@@ -19,4 +19,10 @@ struct Note: Codable {
         self.text = text
         self.dateModified = dateModified
     }
+    
+    mutating func modify(title: String, text: String, dateModified: Date) {
+        self.title = title
+        self.text = text
+        self.dateModified = dateModified
+    }
 }
