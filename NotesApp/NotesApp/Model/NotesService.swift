@@ -24,7 +24,7 @@ class NotesService {
         var notes = [Note]()
         var pinNotes = [Note]()
         var allNotes = [Note]()
-        guard let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else { return }
+        let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
         do {
             for string in try fileManager.contentsOfDirectory(atPath: path.path) {
                 let filePath = path.appendingPathComponent(string)
@@ -75,9 +75,7 @@ class NotesService {
     
     /// Открепить заметку
     func unPin(id: Int, compleationHandler: @escaping (Result<Void, Error>) -> Void) {
-        guard var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else {
-            return
-        }
+        var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
         if id < list.count {
             list.remove(at: id)
             UserDefaults.standard.setValue(list, forKey: "array")
@@ -100,9 +98,7 @@ class NotesService {
     }
     
     func checkPinedNote(note: Note) -> Bool {
-        guard let list = UserDefaults.standard.stringArray(forKey: "array") else {
-            return false
-        }
+        let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
         
         return list.contains(note.id.uuidString)
     }
