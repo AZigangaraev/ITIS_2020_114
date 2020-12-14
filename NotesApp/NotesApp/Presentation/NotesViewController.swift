@@ -89,7 +89,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             let action = UIContextualAction(style: .normal, title: "Unpin") { [weak self] (action, view, completionHandler) in
                 self?.service.unPin(id: indexPath.row) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Unpined")
                     case .failure(let error):
                         print(error)
@@ -106,7 +106,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
                 }
                 self?.service.pin(note: note) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Pined")
                     case .failure(let error):
                         print(error)
@@ -130,7 +130,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             if service.checkPinedNote(note: note){
                 service.unPin(id: indexPath.row) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Unpin")
                     case .failure(let error):
                         print(error)
@@ -139,7 +139,7 @@ class NotesViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
             service.delete(note: note, completionHandler: { (result) in
                 switch result {
-                case .success():
+                case .success:
                     print("Deleted")
                 case .failure(let error):
                     print(error)

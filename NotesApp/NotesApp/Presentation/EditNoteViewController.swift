@@ -39,8 +39,8 @@ class EditNoteViewController: UIViewController {
     @objc private func saveTap(_ sender: Any) {
         guard var title = titleTextField.text else { fatalError() }
         guard var text = textView.text else { fatalError() }
-        text = text.trimmingCharacters(in: [" "])
-        title = title.trimmingCharacters(in: [" "])
+        text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        title = title.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if var note = self.note {
             note.title = title
@@ -49,7 +49,7 @@ class EditNoteViewController: UIViewController {
             
             service.delete(note: note) { (result) in
                 switch result {
-                case .success():
+                case .success:
                     print("Deleted")
                 case .failure(let error):
                     print(error)
@@ -58,7 +58,7 @@ class EditNoteViewController: UIViewController {
             if note.title != "" {
                 service.save(note: note) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Saved")
                     case .failure(let error):
                         print(error)
@@ -68,7 +68,7 @@ class EditNoteViewController: UIViewController {
                 note.title = "NO TITLE"
                 service.save(note: note) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Saved")
                     case .failure(let error):
                         print(error)
@@ -80,7 +80,7 @@ class EditNoteViewController: UIViewController {
                 let note = Note(title: title, text: text, dateModified: Date())
                 service.save(note: note) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Saved")
                     case .failure(let error):
                         print(error)
@@ -91,7 +91,7 @@ class EditNoteViewController: UIViewController {
                 let note = Note(title: title, text: text, dateModified: Date())
                 service.save(note: note) { (result) in
                     switch result {
-                    case .success():
+                    case .success:
                         print("Saved")
                     case .failure(let error):
                         print(error)
