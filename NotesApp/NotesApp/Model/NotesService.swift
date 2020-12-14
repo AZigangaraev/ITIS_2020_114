@@ -24,7 +24,9 @@ class NotesService {
         var notes = [Note]()
         var pinNotes = [Note]()
         var allNotes = [Note]()
-        let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
+        guard let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else {
+            return
+        }
         do {
             for string in try fileManager.contentsOfDirectory(atPath: path.path) {
                 let filePath = path.appendingPathComponent(string)
@@ -38,16 +40,13 @@ class NotesService {
                     notes.append(note)
                 }
             }
-//            let sortedPinNotes = pinNotes.sorted { (note1, note2) -> Bool in
-//                return note1.dateModified ?? Date() > note2.dateModified ?? Date()
-//            }
             let sortedNotes = notes.sorted { (note1, note2) -> Bool in
                 return note1.dateModified ?? Date() > note2.dateModified ?? Date()
             }
             allNotes.append(contentsOf: pinNotes)
             allNotes.append(contentsOf: sortedNotes)
             
-        }catch {
+        } catch {
             completionHandler(.failure(error))
         }
         completionHandler(.success(allNotes))
@@ -66,14 +65,18 @@ class NotesService {
     }
     /// Закрепить заметку.
     func pin(note: Note, compleationHandler: @escaping (Result<Void, Error>) -> Void) {
-        var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
+        guard var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else {
+            return
+        }
         list.append(note.id.uuidString)
         UserDefaults.standard.setValue(list, forKey: "array")
     }
     
     /// Открепить заметку
     func unPin(id: Int, compleationHandler: @escaping (Result<Void, Error>) -> Void) {
-        var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
+        guard var list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else {
+            return
+        }
         if id < list.count {
             list.remove(at: id)
             UserDefaults.standard.setValue(list, forKey: "array")
@@ -90,13 +93,15 @@ class NotesService {
     private func decode(data: Data) -> Note{
         if let note = try? decoder.decode(Note.self, from: data) {
             return note
-        }else {
+        } else {
             fatalError()
         }
     }
     
     func checkPinedNote(note: Note) -> Bool {
-        let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]()
+        guard let list = UserDefaults.standard.stringArray(forKey: "array") ?? [String]() else {
+            return false
+        }
         
         return list.contains(note.id.uuidString)
     }
