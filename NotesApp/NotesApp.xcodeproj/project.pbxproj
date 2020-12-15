@@ -16,6 +16,7 @@
 		AE46CEC2257E84DF0014E28A /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE46CEC1257E84DF0014E28A /* NotesViewController.swift */; };
 		AE46CEC5257E8CF50014E28A /* NotesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE46CEC4257E8CF50014E28A /* NotesService.swift */; };
 		AE46CEC9257E91130014E28A /* EditNoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE46CEC8257E91130014E28A /* EditNoteViewController.swift */; };
+		EA9B700A2587E32400DD0A80 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9B70092587E32400DD0A80 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		AE46CEC1257E84DF0014E28A /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		AE46CEC4257E8CF50014E28A /* NotesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesService.swift; sourceTree = "<group>"; };
 		AE46CEC8257E91130014E28A /* EditNoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNoteViewController.swift; sourceTree = "<group>"; };
+		EA9B70092587E32400DD0A80 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		AE13BC65257D8D030047D99B /* NotesApp */ = {
 			isa = PBXGroup;
 			children = (
+				EA9B70092587E32400DD0A80 /* DataManager.swift */,
 				AE13BC66257D8D030047D99B /* AppDelegate.swift */,
 				AE13BC68257D8D030047D99B /* SceneDelegate.swift */,
 				AE46CEC0257E84D50014E28A /* Presentation */,
@@ -165,6 +168,7 @@
 				AE46CEC2257E84DF0014E28A /* NotesViewController.swift in Sources */,
 				AE13BC67257D8D030047D99B /* AppDelegate.swift in Sources */,
 				AE46CEC5257E8CF50014E28A /* NotesService.swift in Sources */,
+				EA9B700A2587E32400DD0A80 /* DataManager.swift in Sources */,
 				AE13BC69257D8D030047D99B /* SceneDelegate.swift in Sources */,
 				AE46CEC9257E91130014E28A /* EditNoteViewController.swift in Sources */,
 				AE46CEBD257E84810014E28A /* Note.swift in Sources */,
