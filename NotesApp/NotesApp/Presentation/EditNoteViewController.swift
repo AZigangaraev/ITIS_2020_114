@@ -4,25 +4,105 @@
 //
 //  Created by Teacher on 07.12.2020.
 //
-
 import UIKit
 
 class EditNoteViewController: UIViewController {
-    var note: Note?
+     var note: Note?
 
-    @IBOutlet private var modifiedDateLabel: UILabel!
-    @IBOutlet private var titleTextField: UITextField!
-    @IBOutlet private var textView: UITextView!
+     private let service = NotesService()
+     @IBOutlet private var modifiedDateLabel: UILabel!
+     @IBOutlet private var titleTextField: UITextField!
+     @IBOutlet private var textView: UITextView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+     
+     override func viewDidLoad() {
+         super.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTap))
-        textView.layer.borderWidth = 0.5
-        textView.layer.borderColor = UIColor.lightGray.cgColor
-        textView.layer.cornerRadius = 8
-    }
+         
+         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTap))
+         textView.layer.borderWidth = 0.5
+         textView.layer.borderColor = UIColor.lightGray.cgColor
+         textView.layer.cornerRadius = 8
+         loadNote()
+     }
 
-    @objc private func saveTap(_ sender: Any) {
-    }
-}
+
+     private func loadNote() {
+         guard let note = note else {
+             return
+         }
+         guard let date = note.dateModified else {
+             return
+         }
+         modifiedDateLabel.text = "\(date)"
+         titleTextField.text = note.title
+         textView.text = note.text
+     }
+
+     @objc private func saveTap(_ sender: Any) {
+         guard var title = titleTextField.text else { fatalError() }
+         guard var text = textView.text else { fatalError() }
+         text = text.trimmingCharacters(in: .whitespacesAndNewlines)
+         title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+
+         if var note = self.note {
+             note.title = title
+             note.text = text
+             note.dateModified = Date()
+
+             service.delete(note: note) { (result) in
+                 switch result {
+                 case .success:
+                     print("Deleted")
+                 case .failure(let error):
+                     print(error)
+                 }
+             }
+             if note.title != "" {
+                 service.save(note: note) { (result) in
+                     switch result {
+                     case .success:
+                         print("Saved")
+                     case .failure(let error):
+                         print(error)
+                     }
+                 }
+             } else if note.title == "" && note.text != ""{
+                 note.title = "NO TITLE"
+                 service.save(note: note) { (result) in
+                     switch result {
+                     case .success:
+                         print("Saved")
+                     case .failure(let error):
+                         print(error)
+                     }
+                 }
+             }
+         } else {
+             if title != ""{
+                 let note = Note(title: title, text: text, dateModified: Date())
+                 service.save(note: note) { (result) in
+                     switch result {
+                     case .success:
+                         print("Saved")
+                     case .failure(let error):
+                         print(error)
+                     }
+                 }
+             } else if title == "" && text != ""{
+                 title = "NO TITLE"
+                 let note = Note(title: title, text: text, dateModified: Date())
+                 service.save(note: note) { (result) in
+                     switch result {
+                     case .success:
+                         print("Saved")
+                     case .failure(let error):
+                         print(error)
+                     }
+                 }
+             }
+         }
+
+         navigationController?.popViewController(animated: true)
+     }
+ }
